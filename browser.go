@@ -102,6 +102,7 @@ func (b *browser_cli) do(method, url string, body io.Reader) (*http.Response, er
 	}
 
 	b.http_req = http_req
+	b.http_req.Header = b.Header
 
 	resp, err := b.http_client.Do(http_req)
 	if err != nil {
