@@ -1,6 +1,6 @@
-# Um Simples exemplo de Browser
+# Go Browser
 
-Este projeto visa criar um simples browser onde é guarado os cookies/sessão e facilite as interações HTTP para consumir API.
+Este projeto visa criar um simples Browser para facilitar as interações HTTP.
 
 > Requisitos do projeto:
 

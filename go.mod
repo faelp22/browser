@@ -1,3 +1,3 @@
 module github.com/faelp22/browser
 
-go 1.16
+go 1.18
