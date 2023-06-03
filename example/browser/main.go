@@ -18,11 +18,12 @@ func main() {
 			"Content-Type": []string{"application/json; charset=utf-8"},
 		},
 		Timeout: 3, // 3 segundos
+		Mode:    browser.DEVELOPER,
 	})
 
 	// bro.SetUserAgentName("Meu Cli v-0.1.0")
 
-	fmt.Println(bro.GetHeader())
+	// fmt.Println(bro.GetHeader())
 
 	// bro.AddHeader("Content-Type", "application/json; charset=utf-8") // Add append in content
 	// bro.SetHeader("Content-Type", "application/json; charset=utf-8") // Set replace the content

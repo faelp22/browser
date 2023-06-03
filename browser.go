@@ -4,10 +4,18 @@ import (
 	"crypto/tls"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/http/cookiejar"
+	"net/http/httputil"
 	"net/url"
 	"time"
+)
+
+const (
+	DEVELOPER    = "developer"
+	HOMOLOGATION = "homologation"
+	PRODUCTION   = "production"
 )
 
 type BrowserCli interface {
@@ -31,6 +39,7 @@ type BrowserConfig struct {
 	Timeout         int64       `json:"timeout"`
 	TLSClientConfig *tls.Config `json:"-"`
 	ProxyURL        string      `json:"proxy_url"`
+	Mode            string      `json:"mode"`
 }
 
 type browser_cli struct {
@@ -42,6 +51,10 @@ type browser_cli struct {
 func NewBrowser(bro_conf BrowserConfig) BrowserCli {
 
 	new_timeout := time.Duration(10) * time.Second // Default 10 segundos
+
+	if bro_conf.Mode == "" {
+		bro_conf.Mode = PRODUCTION
+	}
 
 	jar, err := cookiejar.New(nil)
 	if err != nil {
@@ -104,9 +117,27 @@ func (b *browser_cli) do(method, url string, body io.Reader) (*http.Response, er
 	b.http_req = http_req
 	b.http_req.Header = b.Header
 
+	if b.Mode != PRODUCTION {
+		reqDump, err := httputil.DumpRequestOut(b.http_req, true)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Printf("REQUEST:\n%s", string(reqDump))
+	}
+
 	resp, err := b.http_client.Do(http_req)
 	if err != nil {
 		fmt.Println(err.Error())
+	}
+
+	if b.Mode != PRODUCTION {
+		respDump, err := httputil.DumpResponse(resp, true)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Printf("RESPONSE:\n%s", string(respDump))
 	}
 
 	return resp, err
