@@ -1,3 +1,3 @@
 package browser
 
-const VERSION = "v0.5.0"
+const VERSION = "v0.5.1"

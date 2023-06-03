@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/http/httputil"
@@ -120,10 +119,11 @@ func (b *browser_cli) do(method, url string, body io.Reader) (*http.Response, er
 	if b.Mode != PRODUCTION {
 		reqDump, err := httputil.DumpRequestOut(b.http_req, true)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 
-		fmt.Printf("REQUEST:\n%s", string(reqDump))
+		fmt.Println("REQUEST:")
+		fmt.Println(string(reqDump))
 	}
 
 	resp, err := b.http_client.Do(http_req)
@@ -134,10 +134,11 @@ func (b *browser_cli) do(method, url string, body io.Reader) (*http.Response, er
 	if b.Mode != PRODUCTION {
 		respDump, err := httputil.DumpResponse(resp, true)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 
-		fmt.Printf("RESPONSE:\n%s", string(respDump))
+		fmt.Println("RESPONSE:")
+		fmt.Println(string(respDump))
 	}
 
 	return resp, err
